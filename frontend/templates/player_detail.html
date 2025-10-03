@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Detail</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 800px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .trophy {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .player-name {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .stats-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #f44336;
+            padding: 20px;
+            background: #ffebee;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .content.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading player information...</p>
+        </div>
+
+        <div class="error" id="error" style="display: none;"></div>
+
+        <div class="content" id="content">
+            <div class="trophy">🏆</div>
+            <h1 id="message">Loading...</h1>
+
+            <div class="stats-container" id="stats">
+                <!-- Stats will be loaded here -->
+            </div>
+
+            <a href="/api/fantasy/home" class="back-btn">← Back to Selection</a>
+        </div>
+    </div>
+
+    <script>
+        // Get player name from URL
+        const pathParts = window.location.pathname.split('/');
+        const playerName = decodeURIComponent(pathParts[pathParts.length - 1]);
+
+        // Fetch player data from backend API
+        async function loadPlayerData() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            const error = document.getElementById('error');
+
+            try {
+                // Call the backend API
+                const response = await fetch(`/api/fantasy/player-info/${encodeURIComponent(playerName)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch player data');
+                }
+
+                const data = await response.json();
+
+                // Hide loading, show content
+                loading.style.display = 'none';
+                content.classList.add('show');
+
+                // Display the message from backend
+                document.getElementById('message').innerHTML = 
+                    `<span class="player-name">${data.player_name}</span><br>${data.message.replace(data.player_name, '')}`;
+
+                // Display stats from backend
+                const statsContainer = document.getElementById('stats');
+                statsContainer.innerHTML = '';
+
+                // Create stat cards
+                const statLabels = {
+                    total_matches: 'Total Matches',
+                    average_points: 'Avg Points',
+                    best_score: 'Best Score',
+                    format_preference: 'Format'
+                };
+
+                for (const [key, value] of Object.entries(data.stats)) {
+                    const statCard = document.createElement('div');
+                    statCard.className = 'stat-card';
+                    statCard.innerHTML = `
+                        <div class="stat-label">${statLabels[key] || key}</div>
+                        <div class="stat-value">${value}</div>
+                    `;
+                    statsContainer.appendChild(statCard);
+                }
+
+            } catch (err) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.textContent = `Error: ${err.message}. Please try again.`;
+                console.error('Error loading player data:', err);
+            }
+        }
+
+        // Load data when page loads
+        loadPlayerData();
+    </script>
+</body>
+</html>

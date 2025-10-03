@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Cricket Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .player-card {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .player-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .player-card.selected {
+            border-color: #667eea;
+            background: #e8eaf6;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .selection-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .selection-info span {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .predict-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .predict-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .predict-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            margin-top: 40px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s; /* Add this line */
+        }
+
+        /* Add this new rule */
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .result-rank {
+            font-size: 32px;
+            font-weight: bold;
+            width: 50px;
+        }
+
+        .result-player {
+            flex: 1;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .result-points {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏏 Fantasy Cricket Predictor</h1>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="match-date">Match Date:</label>
+                <input type="date" id="match-date" required>
+            </div>
+            <div class="control-group">
+                <label for="format">Format:</label>
+                <select id="format" required>
+                    <option value="">Select Format</option>
+                    <option value="Test">Test</option>
+                    <option value="ODI">ODI</option>
+                    <option value="T20">T20</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="selection-info">
+            Selected: <span id="selected-count">0</span> / 10 players
+        </div>
+
+        <div class="players-grid" id="players-grid">
+            <!-- Players will be loaded here -->
+        </div>
+
+        <button class="predict-btn" id="predict-btn" disabled>Predict Top 5 Players</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #667eea; font-weight: 600;">Analyzing predictions...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="results" id="results">
+            <h2>🏆 Top 5 Predicted Players</h2>
+            <div class="results-grid" id="results-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const players = [
+            'Virat Kohli', 'Rohit Sharma', 'Jasprit Bumrah', 'KL Rahul', 
+            'Hardik Pandya', 'Ravindra Jadeja', 'Mohammed Shami', 'Rishabh Pant',
+            'Shubman Gill', 'Suryakumar Yadav', 'Mohammed Siraj', 'Kuldeep Yadav',
+            'Steve Smith', 'David Warner', 'Pat Cummins'
+        ];
+
+        let selectedPlayers = new Set();
+
+        // Initialize players grid
+        function initPlayersGrid() {
+            const grid = document.getElementById('players-grid');
+            players.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `<div class="player-name">${player}</div>`;
+                card.addEventListener('click', () => togglePlayer(player, card));
+                grid.appendChild(card);
+            });
+        }
+
+        // Toggle player selection
+        function togglePlayer(player, card) {
+            if (selectedPlayers.has(player)) {
+                selectedPlayers.delete(player);
+                card.classList.remove('selected');
+            } else {
+                if (selectedPlayers.size < 10) {
+                    selectedPlayers.add(player);
+                    card.classList.add('selected');
+                } else {
+                    alert('You can only select 10 players!');
+                }
+            }
+            updateSelectionCount();
+            updatePredictButton();
+        }
+
+        // Update selection count
+        function updateSelectionCount() {
+            document.getElementById('selected-count').textContent = selectedPlayers.size;
+        }
+
+        // Update predict button state
+        function updatePredictButton() {
+            const dateInput = document.getElementById('match-date');
+            const formatInput = document.getElementById('format');
+            const predictBtn = document.getElementById('predict-btn');
+            
+            const isValid = selectedPlayers.size === 10 && 
+                          dateInput.value && 
+                          formatInput.value;
+            
+            predictBtn.disabled = !isValid;
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        // Predict button click handler
+        async function handlePredict() {
+            const date = document.getElementById('match-date').value;
+            const format = document.getElementById('format').value;
+
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const predictBtn = document.getElementById('predict-btn');
+
+            // Show loading
+            loading.classList.add('show');
+            results.classList.remove('show');
+            predictBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/fantasy/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        players: Array.from(selectedPlayers),
+                        date: date,
+                        format: format
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Prediction failed');
+                }
+
+                const data = await response.json();
+                displayResults(data.top_players);
+
+            } catch (error) {
+                showError('Error making prediction. Please try again.');
+                console.error('Prediction error:', error);
+            } finally {
+                loading.classList.remove('show');
+                predictBtn.disabled = false;
+            }
+        }
+
+        // Display results
+        // Display results
+        function displayResults(topPlayers) {
+            const resultsGrid = document.getElementById('results-grid');
+            const results = document.getElementById('results');
+            
+            resultsGrid.innerHTML = '';
+            
+            topPlayers.forEach((player, index) => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="result-rank">#${index + 1}</div>
+                    <div class="result-player">${player.player_name}</div>
+                    <div class="result-points">${player.predicted_points.toFixed(1)} pts</div>
+                `;
+                
+                // Make card clickable - redirect to player detail page
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    window.location.href = `/api/fantasy/player/${encodeURIComponent(player.player_name)}`;
+                });
+                
+                // Add hover effect hint
+                card.title = `Click to view ${player.player_name}'s profile`;
+                
+                resultsGrid.appendChild(card);
+            });
+            
+            results.classList.add('show');
+        }
+
+        // Event listeners
+        document.getElementById('match-date').addEventListener('change', updatePredictButton);
+        document.getElementById('format').addEventListener('change', updatePredictButton);
+        document.getElementById('predict-btn').addEventListener('click', handlePredict);
+
+        // Set default date to today
+        document.getElementById('match-date').valueAsDate = new Date();
+
+        // Initialize
+        initPlayersGrid();
+    </script>
+</body>
+</html>
