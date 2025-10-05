@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Players - Dream11 Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/player.css">
+    <link rel="stylesheet" href="/static/css/styles1.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<!-- Header Navigation -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/index"><b>Dream Team Predictor</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light" href="/" style="border-radius: 8px; padding: 8px 20px; font-weight: 600;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16" style="margin-right: 5px;">
+                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                            </svg>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="page-content">
+
+<div class='ipl-banner-left'>
+
+    <div class="slider-frame">
+        <div class="slide-images-up">
+
+            <div class="image-container">
+                <img class="image-width" src="/static/images/mi.jpg" alt="Mumbai Indians">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/srh.png" alt="Sunrisers Hyderabad">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/rcb.png" alt="Royal Challengers Bangalore">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/dc.png" alt="Delhi Capitals">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/rr.png" alt="Rajasthan Royals">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/gt.jpg" alt="Gujarat Titans">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/kxip.png" alt="Kings XI Punjab">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/csk.png" alt="Chennai Super Kings">
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<h1>Select Your Dream 11 Team</h1>
+<p class="instruction">Select up to 11 players from each team (maximum 22 players total). Our algorithm will then pick the best 11 for your Dream11 team.</p>
+<div class="player-counter" id="totalCounter">Selected: 0 / 22 Players</div>
+
+{% if error_message %}
+    <div class="error-message">{{ error_message }}</div>
+{% endif %}
+
+<form method="post" action="/player" id="playerForm">
+    <div class="team-container" id="team1">
+        <h2>{{ team1 }}<span class="team-count" id="team1Count">0 / 11</span></h2>
+        {% for player1 in players1 %}
+            <div class="player-item" onclick="togglePlayer(this)">
+                <input type="checkbox" name="player1" value="{{ player1.name }}" class="player-checkbox">
+                <div class="player-details">
+                    <span class="player-name">{{ player1.name }}</span>
+                    <div class="player-meta">
+                        <span class="position {{ player1.position.lower().replace('-', '') }}">{{ player1.position }}</span>
+                        <span class="role">{{ player1.role }}</span>
+                        <span class="points">{{ player1.points }} pts</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="team-container" id="team2">
+        <h2>{{ team2 }}<span class="team-count" id="team2Count">0 / 11</span></h2>
+        {% for player2 in players2 %}
+            <div class="player-item" onclick="togglePlayer(this)">
+                <input type="checkbox" name="player2" value="{{ player2.name }}" class="player-checkbox">
+                <div class="player-details">
+                    <span class="player-name">{{ player2.name }}</span>
+                    <div class="player-meta">
+                        <span class="position {{ player2.position.lower().replace('-', '') }}">{{ player2.position }}</span>
+                        <span class="role">{{ player2.role }}</span>
+                        <span class="points">{{ player2.points }} pts</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="submit-container">
+        <input type="submit" value="Create Dream Team" id="submitBtn">
+    </div>
+    
+    <!-- Hidden fields to pass team and venue info -->
+    <input type="hidden" name="team1_name" value="{{ team1 }}">
+    <input type="hidden" name="team2_name" value="{{ team2 }}">
+    <input type="hidden" name="venue" value="{{ venue }}">
+</form>
+
+<div class='ipl-banner-right'>
+
+    <div class="slider-frame">
+        <div class="slide-images-down">
+
+            <div class="image-container">
+                <img class="image-width" src="/static/images/mi.jpg" alt="Mumbai Indians">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/srh.png" alt="Sunrisers Hyderabad">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/rcb.png" alt="Royal Challengers Bangalore">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/dc.png" alt="Delhi Capitals">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/gt.jpg" alt="Gujarat Titans">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/rr.png" alt="Rajasthan Royals">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/kxip.png" alt="Kings XI Punjab">
+            </div>
+            <div class="image-container">
+                <img class="image-width" src="/static/images/csk.png" alt="Chennai Super Kings">
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div><!-- End page-content -->
+
+<script>
+    let totalSelected = 0;
+    const MAX_TEAM_PLAYERS = 11;
+    const MAX_TOTAL_PLAYERS = 22;
+    const MIN_TOTAL_PLAYERS = 11;
+    
+    function togglePlayer(element) {
+        const checkbox = element.querySelector('.player-checkbox');
+        const teamContainer = element.closest('.team-container');
+        const teamId = teamContainer.id;
+        const currentTeamCount = document.querySelectorAll(`#${teamId} .player-checkbox:checked`).length;
+        
+        // Check if we're trying to check a box
+        if (!checkbox.checked) {
+            // Check team limit (11 per team)
+            if (currentTeamCount >= MAX_TEAM_PLAYERS) {
+                alert(`You can only select up to ${MAX_TEAM_PLAYERS} players from each team.`);
+                return;
+            }
+            
+            // Check total limit (22 total)
+            if (totalSelected >= MAX_TOTAL_PLAYERS) {
+                alert(`You can only select up to ${MAX_TOTAL_PLAYERS} players in total.`);
+                return;
+            }
+        }
+        
+        checkbox.checked = !checkbox.checked;
+        updateCounts();
+        updatePlayerStyle(element, checkbox.checked);
+    }
+    
+    function updatePlayerStyle(element, isChecked) {
+        if (isChecked) {
+            element.classList.add('selected');
+        } else {
+            element.classList.remove('selected');
+        }
+    }
+    
+    function updateCounts() {
+        const team1Count = document.querySelectorAll('#team1 .player-checkbox:checked').length;
+        const team2Count = document.querySelectorAll('#team2 .player-checkbox:checked').length;
+        totalSelected = team1Count + team2Count;
+        
+        // Update team counters
+        document.getElementById('team1Count').textContent = `${team1Count} / ${MAX_TEAM_PLAYERS}`;
+        document.getElementById('team2Count').textContent = `${team2Count} / ${MAX_TEAM_PLAYERS}`;
+        
+        // Update total counter
+        const totalCounter = document.getElementById('totalCounter');
+        totalCounter.textContent = `Selected: ${totalSelected} / ${MAX_TOTAL_PLAYERS} Players`;
+        
+        // Update counter styling based on count
+        if (totalSelected >= MIN_TOTAL_PLAYERS && totalSelected <= MAX_TOTAL_PLAYERS) {
+            totalCounter.classList.remove('warning');
+            totalCounter.classList.add('success');
+        } else if (totalSelected > MAX_TOTAL_PLAYERS || totalSelected < MIN_TOTAL_PLAYERS) {
+            totalCounter.classList.remove('success');
+            totalCounter.classList.add('warning');
+        } else {
+            totalCounter.classList.remove('success', 'warning');
+        }
+        
+        // Enable/disable submit button
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = totalSelected < MIN_TOTAL_PLAYERS || totalSelected > MAX_TOTAL_PLAYERS;
+        
+        // Update team counter colors based on limits
+        const team1Counter = document.getElementById('team1Count');
+        const team2Counter = document.getElementById('team2Count');
+        
+        team1Counter.className = 'team-count';
+        team2Counter.className = 'team-count';
+        
+        if (team1Count >= MAX_TEAM_PLAYERS) team1Counter.classList.add('max-reached');
+        if (team2Count >= MAX_TEAM_PLAYERS) team2Counter.classList.add('max-reached');
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set initial state for checkboxes
+        const checkboxes = document.querySelectorAll('.player-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function(e) {
+                e.stopPropagation();
+                updateCounts();
+                updatePlayerStyle(checkbox.closest('.player-item'), checkbox.checked);
+            });
+            
+            // Set initial style
+            if (checkbox.checked) {
+                updatePlayerStyle(checkbox.closest('.player-item'), true);
+            }
+        });
+        
+        updateCounts();
+        
+        // Form validation
+        document.getElementById('playerForm').addEventListener('submit', function(e) {
+            if (totalSelected < MIN_TOTAL_PLAYERS || totalSelected > MAX_TOTAL_PLAYERS) {
+                e.preventDefault();
+                alert(`Please select between ${MIN_TOTAL_PLAYERS} and ${MAX_TOTAL_PLAYERS} players. You have selected ${totalSelected} players.`);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

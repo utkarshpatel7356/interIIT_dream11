@@ -1,0 +1,510 @@
+/* Add your custom styles here */
+/* Navbar */
+/* Navbar styles */
+.navbar {
+    background-color: #00ff00 !important; /* Green background for the navbar, !important to override Bootstrap styles */
+  }
+  
+  /* Navbar brand styles */
+  .navbar-brand {
+    color: #fff !important; /* White text color for the brand */
+  }
+  
+  /* Navbar toggler icon color */
+  .navbar-toggler-icon {
+    background-color: #000; /* Black color for the toggler icon */
+  }
+  
+  /* Navbar link styles */
+  .navbar-nav .nav-link {
+    color: #fff !important; /* White text color for navbar links */
+  }
+  
+  /* Dropdown menu styles */
+  .dropdown-menu {
+    background-color: #ff0000; /* Red background for the dropdown menu */
+  }
+  
+  /* Dropdown item styles */
+  .dropdown-item {
+    color: #fff !important; /* White text color for dropdown items */
+  }
+  
+  /* Dropdown item hover styles */
+  .dropdown-item:hover {
+    background-color: greenyellow; /* Green background on hover for dropdown items */
+    color: #000 !important; /* Black text color on hover for dropdown items */
+  }
+    
+  /* Navbar styles */
+  .navbar {
+    background-color: #00ff00 !important; /* Green background for the navbar, !important to override Bootstrap styles */
+  }
+  
+  /* Navbar brand styles */
+  .navbar-brand {
+    color: #fff !important; /* White text color for the brand */
+  }
+  
+  /* Navbar toggler icon color */
+  .navbar-toggler-icon {
+    background-color: rgb(0, 0, 0); /* White color for the toggler icon */
+  }
+  
+  
+  /* Enhanced Dropdown menu styles */
+  .dropdown-menu {
+    background: linear-gradient(135deg, #2C3E50, #34495E);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 10px 0;
+  }
+  
+  /* Enhanced Dropdown item styles */
+  .dropdown-item {
+    color: #FFFFFF !important;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
+    margin: 3px 10px;
+    position: relative;
+  }
+  
+  .dropdown-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: linear-gradient(180deg, #3498db, #2980b9);
+    border-radius: 2px;
+    transition: height 0.3s ease;
+  }
+  
+  .dropdown-item:hover::before {
+    height: 70%;
+  }
+  
+  .dropdown-item:hover {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+    color: #FFFFFF !important;
+    transform: translateX(8px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    padding-left: 24px;
+  }
+ 
+  /* Dropdown item hover styles */
+  @media (max-width: 768px) {
+    /* Adjust styles for mobile view */
+    .navbar-toggler {
+      background-color: #000000 !important; /* Green background for the toggler button in mobile view */
+    }
+    .navbar-collapse {
+      background-color: #ff0000; /* Red background for the collapsed navbar in mobile view */
+    }
+
+    .navbar {
+        background-color: #00ff00 !important; /* Green background for the navbar, !important to override Bootstrap styles */
+      }
+  }
+/* Clean Body Background - Matching Login Page */
+  #body {
+    background-image: url('/static/images/stadium_background.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /* Add overlay for better readability - same as login page */
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: overlay;
+    font-family: 'Work Sans', 'Arial', sans-serif;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Clean Header/Navbar Styling */
+.navbar {
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 12px 0;
+}
+
+.navbar-brand {
+    font-weight: 600 !important;
+    font-size: 1.5rem !important;
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand:hover {
+    color: #3498db !important;
+    text-shadow: 2px 2px 6px rgba(52, 152, 219, 0.4);
+    transform: scale(1.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Navigation Links Styling - Clean and Modern */
+.navbar-nav .nav-link {
+    color: #FFFFFF !important;
+    padding: 8px 20px !important;
+    margin: 0 5px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::before {
+    width: 80%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #3498db !important;
+    background: rgba(52, 152, 219, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.navbar-nav .nav-link:active {
+    transform: translateY(0);
+}
+
+/* Logout Button Styling */
+.btn-outline-light {
+    color: #FFFFFF !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline-light::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-outline-light:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-outline-light:hover {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+    border-color: #e74c3c !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+}
+
+.btn-outline-light:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+/*Options*/
+
+  /* Add styles for the button when hovered */
+/* Clean Submit Button Styling */
+button {
+    padding: 12px 30px;
+    background: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+#bt {
+    padding-top: 25px;
+    text-align: center;
+}
+
+button:hover {
+    background: #2980b9;
+    color: #ffffff;
+    border: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+}
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+/* Add animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 1s;
+}
+
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Header styles */
+header {
+    background-color: #212529;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-toggler-icon {
+    background-color: rgb(5, 5, 5);
+    border: 4px;
+}
+
+/* Form styles */
+form {
+    margin-top: 30px;
+}
+
+#select {
+    margin-bottom: 20px;  
+}
+
+select {
+    padding: 8px;
+    font-size: 16px;
+    border: 3px solid rgb(26, 121, 9);
+    border-radius: 5px;
+    transition: 0.3s;
+    width: 200px;
+}
+
+select:hover {
+    padding: 8px;
+    font-size: 16px;
+    border: 3px solid rgb(41, 138, 24);
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+/* Options */
+/* Basic reset for default styles */
+/* Clean Custom Select Styling */
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px 15px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    width: 85%;
+    box-sizing: border-box;
+    color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2), 0 2px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.option{
+    background-color: green;
+}
+
+/* Arrow icon for the dropdown */
+.custom-select::after {
+    content: '\25BC'; /* Unicode character for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: rgb(29, 123, 6);
+}
+
+/* Style on hover/focus */
+.custom-select:hover,
+.custom-select:focus {
+    border-color: #186e10e2;
+    box-shadow: 0 0 10px rgba(11, 123, 37, 0.512);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 10px 15px !important;
+        margin: 3px 0;
+        font-size: 14px;
+    }
+    
+    .btn-outline-light {
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+    }
+    
+    .form {
+        width: 95%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+    
+    .form h4 {
+        font-size: 1.5rem;
+    }
+    
+    .custom-select {
+        width: 95%;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    button {
+        width: 100%;
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+    
+    .navbar {
+        padding: 10px 0;
+    }
+}
+
+.container
+{
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-size: 100% 100%;
+    position: absolute;
+	  top: 140px;
+    right: 50px;
+    left: 50px;
+}
+
+/* Clean Form Styling */
+.form {
+    color: #2c3e50;
+    height: auto;
+    width: 550px;
+    max-width: 90vw;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    overflow: auto;
+    margin: auto;
+    margin-bottom: 10rem;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(189, 195, 199, 0.2);
+    padding: 30px;
+    position: relative;
+    overflow: visible;
+}
+
+.form::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #e3f2fd, #f0f4f8);
+    border-radius: 13px;
+    z-index: -1;
+    opacity: 0.3;
+    animation: none;
+}
+
+/* Clean Form Title */
+.form h4 {
+    color: #2c3e50;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
